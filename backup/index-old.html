@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Realtime DB CRUD Web App</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="header center">
+            <img src="https://firebase.google.com/images/brand-guidelines/logo-standard.png" width="400px" alt="">
+            <h4>Real-Time Database CRUD web app </h4> 
+
+            <br>
+            <form id="reviewForm">
+                <input type="hidden" id="hiddenId" />
+                <div class="input-field">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName"  name="fullName" value="" />
+                </div>
+                <div class="input-field">
+                    <label for="message">Review Contents</label>
+                    <textarea class="materialize-textarea" id="message" name="message" ></textarea>
+                </div>
+                <br><br><br>
+                <button  class="waves-effect waves-light btn" type = "submit">Add/Update</button>
+
+
+            </form>
+            <br><br><br>
+            <ul id="reviews"></ul>
+        </div>
+    </div>
+
+    <!-- Insert this script at the bottom of the HTML, but before you use any Firebase services -->
+
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js'
+
+        const firebaseConfig = {
+
+        apiKey: "AIzaSyARBtT-4j3EiwjhgCBIt0APLW7ToFy7eBA",
+
+        authDomain: "uniquecommentcollector.firebaseapp.com",
+
+        databaseURL: "https://uniquecommentcollector-default-rtdb.europe-west1.firebasedatabase.app",
+
+        projectId: "uniquecommentcollector",
+
+        storageBucket: "uniquecommentcollector.appspot.com",
+
+        messagingSenderId: "335450058601",
+
+        appId: "1:335450058601:web:1dc145ec3fcc86d51a57f8"
+
+        };
+
+
+        // Initialize Firebase
+
+        const app = initializeApp(firebaseConfig);
+
+        import {getDatabase, ref, child, get, set, update, remove} from 'https://www.gstatic.com/firebasejs/10.10.0/firebase-database.js'
+        const db = getDatabase();
+
+        reviewForm.addEventListener("submit", AddData());
+
+
+        function AddData(){
+
+        alert( document.getElementById("fullName").value);
+        document.getElementById("fullName").innerHTML="aber hallo!";
+
+        let  hiddenId=document.getElementById("hiddenId");
+        let  fullName=document.getElementById("fullName");
+        let  message=document.getElementById("message");
+        let  id=hiddenId.value || Date.now();
+
+        console.log(fullName.value);
+
+        set(ref(db, "reviews/" + id),{
+            fullName: fullName.value,
+            message: message.value
+        }).then(()=>{
+            alert("Data added successfully.");
+            console.log("No error")
+        }).catch(()=>{
+            alert("Unsuccessful.");
+            console.log(error);
+        })
+
+        };
+    </script>
+  
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+</body>
+</html>
